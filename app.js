@@ -43,4 +43,22 @@ app.get('/show',function(req,res){
        Client.close();
     });
 });
+app.post('/insert',function(req,res){
+    mongoose.connect(dbUrl,function(err,Client){
+        if (err){
+            throw err;
+        }else{
+            var obj = {No: req.body.No,Uname: req.body.Uname,Password: req.body.Password};
+            //var db = client.db("local");
+           // db.collection('test').insertOne(obj,function(err,res){
+            //    if (err) throw err;
+           //     res.send({log: "insert success !",data: obj});
+           //     console .log(obj);
+           // })
+           res.send({log: "insert success !",data: obj});
+            console .log(obj);
+        }
+        client.close();
+    })
+})
 //module.exports = app;
