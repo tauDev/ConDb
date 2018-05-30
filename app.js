@@ -49,16 +49,19 @@ app.post('/insert',function(req,res){
             throw err;
         }else{
             var obj = {No: req.body.No,Uname: req.body.Uname,Password: req.body.Password};
-            //var db = client.db("local");
-           // db.collection('test').insertOne(obj,function(err,res){
-            //    if (err) throw err;
-           //     res.send({log: "insert success !",data: obj});
-           //     console .log(obj);
-           // })
-           res.send({log: "insert success !",data: obj});
-            console .log(obj);
+            var db = Client.db("local");
+            db.collection('test').insertOne(obj,function(err,rmm){
+               if (err){
+                throw err;
+               }else{
+                res.send(rmm);
+                console.log(obj);
+               } 
+           });
+           //res.send({log: "insert success !",data: obj});
+           // console .log(obj);
         }
-        client.close();
+        Client.close();
     });
 });
 app.get('/show',function(req,res){
