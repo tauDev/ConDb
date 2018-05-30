@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 //Add these two line
 //var UserController = require('./user/UserController');
 //app.use('/users',UserController);
-app.get('/show',function(req,res){
+app.get('/display',function(req,res){
     mongoose.connect(dbUrl,function(err,Client){
        if (err) {
            throw err;
@@ -59,6 +59,20 @@ app.post('/insert',function(req,res){
             console .log(obj);
         }
         client.close();
-    })
-})
+    });
+});
+app.get('/show',function(req,res){
+    mongoose.connect("mongodb://192.168.0.124:27017",function(err,Client){
+        if(err){
+            throw err;
+        }else{
+            var db = Client.db("local");
+            db.collection('test').find(req.query).toArray(function(err,result){
+                if(err) res.send(err);
+                res.send(result);
+            })
+        }
+        Client.close();
+    });
+});
 //module.exports = app;
