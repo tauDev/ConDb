@@ -64,6 +64,28 @@ app.post('/insert',function(req,res){
         Client.close();
     });
 });
+app.post('/update',function(req,res){
+    mongoose.connect(dbUrl,function(err,Client){
+        if (err){
+            throw err;
+        }else{
+           var obj = { $set: { Uname: req.body.uname,Password: req.body.pass } };
+           var myQ =  { Uname: req.body.uname};
+          // var opts = (req.body.opts ? req.body.opts : {});
+        var db = Client.db("local");
+        db.collection('test').updateOne(myQ, obj,function(err,rmi){
+            if (err){
+                throw err;
+            }else{
+           res.send(rmi);
+               console.log(myQ);
+            }
+         });
+        //console.log(indexs +" : " + obj);
+        }
+        Client.close();
+    })
+}),
 app.get('/show',function(req,res){
     mongoose.connect("mongodb://192.168.0.124:27017",function(err,Client){
         if(err){
