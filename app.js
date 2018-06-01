@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongodb').MongoClient;
 var dbUrl = "mongodb://192.168.0.124:27017";
-var objectID = require('mongodb').objectID;
+var objectID = require('mongoose').Types.ObjectId;
 
 app.use(bodyParser.urlencoded({ extended: true}));
  app.use(bodyParser.json());
@@ -70,7 +70,7 @@ app.post('/update',function(req,res){
             throw err;
         }else{
            var obj = { $set: { Uname: req.body.uname,Password: req.body.pass } };
-           var myQ =  { Uname: req.body.uname};
+           var myQ =  { _id: new objectID(req.body.id)};
           // var opts = (req.body.opts ? req.body.opts : {});
         var db = Client.db("local");
         db.collection('test').updateOne(myQ, obj,function(err,rmi){
