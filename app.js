@@ -4,6 +4,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongodb').MongoClient;
 var dbUrl = "mongodb://192.168.0.124:27017";
 var objectID = require('mongoose').Types.ObjectId;
+var multer = require('multer');
+var fs =require('fs');
+var upload = multer({ dest: '/upload'});
 
 app.use(bodyParser.urlencoded({ extended: true}));
  app.use(bodyParser.json());
@@ -14,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
     });
+
  app.get('/',function(req,res){
      res.send("Hello Nodjs from express.");
  });
@@ -98,6 +102,26 @@ app.get('/show',function(req,res){
             })
         }
         Client.close();
+    });
+});
+app.post('/upload',upload.single("file"),function (req,res) {
+    var file = __dirname + "/Upload/" + req.file.originalname;
+    fs.readFile( req.file.path,function(err,data) {
+        fs.writeFile(file,data,function (err) {
+            if (err) {
+                console.error( err );
+                response = {
+                    message: "Sory, file couldn't be upload.",
+                    filename: req.file.originalname
+                };
+            }else{
+                response = {
+                    message: "file uploaded successfully",
+                    filename: req.file.originalname
+                };
+            }
+            res.send( JSON.stringify( response));
+        });
     });
 });
 //module.exports = app;
