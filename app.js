@@ -5,6 +5,7 @@ var mongoose = require('mongodb').MongoClient;
 var dbUrl = "mongodb://192.168.0.124:27017";
 var objectID = require('mongoose').Types.ObjectId;
 var multer = require('multer');
+var sharp = require('sharp');
 var fs =require('fs');
 var upload = multer({ dest: '/upload'});
 
@@ -106,7 +107,7 @@ app.get('/show',function(req,res){
 });
 app.post('/upload',upload.single("file"),function (req,res) {
     var file = __dirname + "/Upload/" + req.file.originalname;
-    fs.readFile( req.file.path,function(err,data) {
+    sharp(req.file.path).resize(200,200).toBuffer(function(err,data) {
         fs.writeFile(file,data,function (err) {
             if (err) {
                 console.error( err );
