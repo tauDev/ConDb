@@ -92,7 +92,7 @@ app.post('/update',function(req,res){
     })
 }),
 app.get('/show',function(req,res){
-    mongoose.connect("mongodb://192.168.0.124:27017",function(err,Client){
+    mongoose.connect(dbUrl,function(err,Client){
         if(err){
             throw err;
         }else{
